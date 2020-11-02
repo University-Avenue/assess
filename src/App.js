@@ -1,6 +1,7 @@
-import React from "react";
-import "./App.css";
-import mondaySdk from "monday-sdk-js";
+import React from 'react';
+import './App.css';
+import mondaySdk from 'monday-sdk-js';
+
 const monday = mondaySdk();
 
 class App extends React.Component {
@@ -10,12 +11,8 @@ class App extends React.Component {
     // Default state
     this.state = {
       settings: {},
-      name: "",
+      name: '',
     };
-  }
-
-  componentDidMount() {
-    // TODO: set up event listeners
   }
 
   render() {
