@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AceEditor from 'react-ace';
 import SplitPane from 'react-split-pane';
 import axios from 'axios';
@@ -8,11 +8,14 @@ import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/mode-c_cpp';
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/ext-language_tools';
+import PropTypes from 'prop-types';
 import { languages } from './Constants';
+import { ME_QUERY } from './Queries';
 
-const Editor = () => {
+const Editor = ({ monday }) => {
   const [value, setValue] = useState('');
   const [language, setLanguage] = useState(languages[0]);
+  const [isGuest, setIsGuest] = useState(true);
 
   const changeHandler = (codeChange) => {
     setValue(codeChange);
@@ -30,6 +33,12 @@ const Editor = () => {
       .then((response) => console.log(response))
       .catch((err) => console.log(err));
   };
+
+  useEffect(() => {
+    monday.api(ME_QUERY)
+      .then((res) => setIsGuest(res.data.me.is_guest))
+      .catch((error) => console.log(error));
+  });
 
   return (
     <SplitPane split="vertical" minSize="50%">
@@ -72,4 +81,7 @@ const Editor = () => {
   );
 };
 
+Editor.propTypes = {
+  monday: PropTypes.object.isRequired,
+};
 export default Editor;
