@@ -38,7 +38,7 @@ const Editor = ({ monday }) => {
     monday.api(ME_QUERY)
       .then((res) => setIsGuest(res.data.me.is_guest))
       .catch((error) => console.log(error));
-  });
+  }, []);
 
   return (
     <SplitPane split="vertical" minSize="50%">
