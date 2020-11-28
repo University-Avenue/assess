@@ -1,4 +1,5 @@
-export const languages = [
+// eslint-disable-next-line import/prefer-default-export
+export const Languages = [
   {
     id: 71,
     name: 'Python (3.8.1)',
