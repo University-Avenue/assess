@@ -85,6 +85,8 @@ body {
   padding: 16px 20px;
   font-weight: 400;
   line-height: 1.5rem;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .question-header {
