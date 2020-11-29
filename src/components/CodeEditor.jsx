@@ -4,7 +4,11 @@ import AceEditor from 'react-ace';
 import axios from 'axios';
 import { Languages } from './Constants';
 import CodeEditorHeader from './CodeEditorHeader';
-import 'ace-builds/src-noconflict/theme-github';
+import 'ace-builds/src-noconflict/theme-monokai';
+import 'ace-builds/src-noconflict/mode-java';
+import 'ace-builds/src-noconflict/mode-python';
+import 'ace-builds/src-noconflict/mode-c_cpp';
+import 'ace-builds/src-noconflict/mode-javascript';
 
 /*
   Languages:
@@ -38,7 +42,7 @@ const CodeEditor = (props) => {
           width="100%"
           mode={language.ace_name}
           value={textValue}
-          theme="github"
+          theme="monokai"
           fontSize={14}
           highlightActiveLine
           onChange={setTextValue}

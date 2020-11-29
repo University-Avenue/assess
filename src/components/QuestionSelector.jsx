@@ -46,6 +46,7 @@ const QuestionSelector = ({ selectedQuestion, setSelectedQuestion, disabled }) =
             }
             if (questionBoard[i].column_values[j].title === 'Examples') {
               formattedQuestion.examples = JSON.parse(questionBoard[i].column_values[j].value).text;
+              formattedQuestion.examples = formattedQuestion.examples.replace(':', ':\n');
             }
           }
           formattedQuestions.push(formattedQuestion);
@@ -60,7 +61,7 @@ const QuestionSelector = ({ selectedQuestion, setSelectedQuestion, disabled }) =
     <DropdownButton
       onSelect={handleSelect}
       disabled={disabled}
-      title={selectedQuestion ? selectedQuestion.name : 'No Questions'}
+      title="Questions"
       variant="secondary"
     >
       {questions.map((question, index) => (
