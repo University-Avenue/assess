@@ -9,6 +9,7 @@ const Editor = () => {
   const [terminalValue, setTerminalValue] = useState('');
   const monday = useMondaySDK();
   const [isGuest, setIsGuest] = useState(true);
+  const [selectedQuestion, setSelectedQuestion] = useState({});
 
   useEffect(() => {
     monday.api(ME_QUERY)
@@ -18,7 +19,14 @@ const Editor = () => {
 
   return (
     <SplitPane split="vertical" minSize="40%" allowResize={false}>
-      <QuestionSelector />
+      <div>
+        <QuestionSelector
+          selectedQuestion={selectedQuestion}
+          setSelectedQuestion={setSelectedQuestion}
+        />
+        <p>{selectedQuestion ? selectedQuestion.body : null}</p>
+      </div>
+
       <SplitPane split="horizontal" minSize="70%">
         <CodeEditor setTerminalValue={setTerminalValue} />
         <div>
