@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
-import mondaySdk from 'monday-sdk-js';
 import Editor from './components/Editor';
-
-const monday = mondaySdk();
+import { MondaySDKProvider } from './components/MondaySDKContext';
 
 const App = () => (
-  <Editor monday={monday} />
+  <MondaySDKProvider>
+    <Editor />
+  </MondaySDKProvider>
 );
 
 export default App;

@@ -6,3 +6,20 @@ export const ME_QUERY = `
     }
   }
 `;
+
+export const GET_ITEMS = `
+query {
+\tboards () {
+\t\tid
+    name
+    items {
+      id
+      name
+      column_values {
+        title
+        value
+      }
+    }
+\t}
+}
+`;
