@@ -79,6 +79,24 @@ body {
   flex: 1 1 auto;
 }
 
+.console-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.console-container {
+  color: #333;
+  font-size: 1.2em;
+  padding: 10px;
+}
+
+.console-loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 /* Question Display */
 .question-info {
   word-break: break-word;

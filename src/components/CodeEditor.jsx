@@ -20,7 +20,7 @@ import useInterval from '../util/setInterval';
   3 -> Java
 */
 
-const CodeEditor = ({ setTerminalValue, isGuest }) => {
+const CodeEditor = ({ setConsoleValue, isGuest, setConsoleIsLoading }) => {
   const [textValue, setTextValue] = useState('');
   const [language, setLanguage] = useState(Languages[0]);
 
@@ -41,8 +41,12 @@ const CodeEditor = ({ setTerminalValue, isGuest }) => {
   });
 
   const handleRun = () => {
+    setConsoleIsLoading(true);
     axios.post('http://localhost:5000/run_code', { code: textValue, language_id: language.id })
-      .then((response) => { setTerminalValue(response.data.stdout); })
+      .then((response) => {
+        setConsoleValue(response.data.stdout);
+        setConsoleIsLoading(false);
+      })
       .catch((error) => { console.log(error); });
   };
 
@@ -91,8 +95,9 @@ const CodeEditor = ({ setTerminalValue, isGuest }) => {
 };
 
 CodeEditor.propTypes = {
-  setTerminalValue: PropTypes.func.isRequired,
+  setConsoleValue: PropTypes.func.isRequired,
   isGuest: PropTypes.bool.isRequired,
+  setConsoleIsLoading: PropTypes.func.isRequired,
 };
 
 export default CodeEditor;

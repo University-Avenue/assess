@@ -4,11 +4,14 @@ import CodeEditor from './CodeEditor';
 import { ME_QUERY } from './Queries';
 import { useMondaySDK } from './MondaySDKContext';
 import Question from './Question';
+import ConsoleLoader from './ConsoleLoader';
+import Console from './Console';
 
 const Editor = () => {
-  const [terminalValue, setTerminalValue] = useState('');
-  const monday = useMondaySDK();
+  const [consoleValue, setConsoleValue] = useState('');
   const [isGuest, setIsGuest] = useState(true);
+  const [consoleIsLoading, setConsoleIsLoading] = useState(false);
+  const monday = useMondaySDK();
 
   useEffect(() => {
     monday.api(ME_QUERY)
@@ -20,10 +23,8 @@ const Editor = () => {
     <SplitPane split="vertical" minSize="30%" allowResize={false}>
       <Question isGuest={isGuest} />
       <SplitPane split="horizontal" minSize="70%">
-        <CodeEditor setTerminalValue={setTerminalValue} isGuest={isGuest} />
-        <div>
-          {terminalValue}
-        </div>
+        <CodeEditor setConsoleValue={setConsoleValue} isGuest={isGuest} setConsoleIsLoading={setConsoleIsLoading} />
+        { consoleIsLoading ? <ConsoleLoader /> : <Console consoleValue={consoleValue} />}
       </SplitPane>
     </SplitPane>
   );
