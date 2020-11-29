@@ -20,7 +20,7 @@ const Editor = () => {
     <SplitPane split="vertical" minSize="30%" allowResize={false}>
       <Question isGuest={isGuest} />
       <SplitPane split="horizontal" minSize="70%">
-        <CodeEditor setTerminalValue={setTerminalValue} />
+        <CodeEditor setTerminalValue={setTerminalValue} isGuest={isGuest} />
         <div>
           {terminalValue}
         </div>
