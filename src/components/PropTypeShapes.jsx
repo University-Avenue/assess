@@ -10,4 +10,5 @@ export const questionShape = PropTypes.shape({
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
+  examples: PropTypes.string.isRequired,
 });

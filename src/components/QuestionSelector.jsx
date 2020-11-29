@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import { useMondaySDK } from './MondaySDKContext';
 import { GET_ITEMS } from './Queries';
 import { questionShape } from './PropTypeShapes';
 
-const QuestionSelector = ({ selectedQuestion, setSelectedQuestion }) => {
+const QuestionSelector = ({ selectedQuestion, setSelectedQuestion, disabled }) => {
   const [questions, setQuestions] = useState([]);
   const monday = useMondaySDK();
 
@@ -44,7 +45,8 @@ const QuestionSelector = ({ selectedQuestion, setSelectedQuestion }) => {
               formattedQuestion.body = JSON.parse(questionBoard[i].column_values[j].value).text;
             }
             if (questionBoard[i].column_values[j].title === 'Examples') {
-              formattedQuestion.exmaples = questionBoard[i].column_values[j].value;
+              formattedQuestion.examples = JSON.parse(questionBoard[i].column_values[j].value).text;
+              formattedQuestion.examples = formattedQuestion.examples.replace(':', ':\n');
             }
           }
           formattedQuestions.push(formattedQuestion);
@@ -56,27 +58,28 @@ const QuestionSelector = ({ selectedQuestion, setSelectedQuestion }) => {
   }, []);
 
   return (
-    <Dropdown onSelect={handleSelect}>
-      <Dropdown.Toggle variant="secondary">
-        {selectedQuestion ? selectedQuestion.name : null}
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        {questions.map((question, index) => (
-          <Dropdown.Item
-            key={question.id}
-            eventKey={index}
-          >
-            {question.name}
-          </Dropdown.Item>
-        ))}
-      </Dropdown.Menu>
-    </Dropdown>
+    <DropdownButton
+      onSelect={handleSelect}
+      disabled={disabled}
+      title="Questions"
+      variant="secondary"
+    >
+      {questions.map((question, index) => (
+        <Dropdown.Item
+          key={question.id}
+          eventKey={index}
+        >
+          {question.name}
+        </Dropdown.Item>
+      ))}
+    </DropdownButton>
   );
 };
 
 QuestionSelector.propTypes = {
   selectedQuestion: questionShape.isRequired,
   setSelectedQuestion: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default QuestionSelector;

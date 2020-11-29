@@ -5,7 +5,11 @@ import axios from 'axios';
 import { io } from 'socket.io-client';
 import { Languages } from './Constants';
 import CodeEditorHeader from './CodeEditorHeader';
-import 'ace-builds/src-noconflict/theme-github';
+import 'ace-builds/src-noconflict/theme-monokai';
+import 'ace-builds/src-noconflict/mode-java';
+import 'ace-builds/src-noconflict/mode-python';
+import 'ace-builds/src-noconflict/mode-c_cpp';
+import 'ace-builds/src-noconflict/mode-javascript';
 import useInterval from '../util/setInterval';
 
 /*
@@ -69,7 +73,7 @@ const CodeEditor = ({ setTerminalValue, isGuest }) => {
           mode={language.ace_name}
           readOnly={isGuest}
           value={textValue}
-          theme="github"
+          theme="monokai"
           fontSize={14}
           highlightActiveLine
           onChange={setTextValue}
