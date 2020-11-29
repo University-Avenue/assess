@@ -71,7 +71,7 @@ const CodeEditor = ({ setTerminalValue, isGuest }) => {
           height="100%"
           width="100%"
           mode={language.ace_name}
-          readOnly={isGuest}
+          readOnly={!isGuest}
           value={textValue}
           theme="monokai"
           fontSize={14}
