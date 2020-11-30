@@ -24,4 +24,22 @@ export const Languages = [
     ace_name: 'java',
     is_archived: false,
   },
+  {
+    id: 74,
+    name: 'TypeScript (3.7.4)',
+    ace_name: 'typescript',
+    is_archived: false,
+  },
+  {
+    id: 72,
+    name: 'Ruby (2.7.0)',
+    ace_name: 'ruby',
+    is_archived: false,
+  },
+  {
+    id: 51,
+    name: 'C# (Mono 6.6.0.161)',
+    ace_name: 'csharp',
+    is_archived: false,
+  },
 ];

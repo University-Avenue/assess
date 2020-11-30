@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
 import axios from 'axios';
@@ -10,8 +10,10 @@ import 'ace-builds/src-noconflict/mode-java';
 import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/mode-c_cpp';
 import 'ace-builds/src-noconflict/mode-javascript';
+import 'ace-builds/src-noconflict/mode-ruby';
+import 'ace-builds/src-noconflict/mode-typescript';
+import 'ace-builds/src-noconflict/mode-csharp';
 import useInterval from '../util/setInterval';
-import { Accordion } from 'react-bootstrap';
 
 /*
   Languages:
@@ -23,7 +25,9 @@ import { Accordion } from 'react-bootstrap';
 
 const socket = io.connect('http://localhost:5000', { transports: ['websocket'], forceNew: true });
 
-const CodeEditor = ({ setConsoleValue, isGuest, setConsoleIsLoading, viewId }) => {
+const CodeEditor = ({
+  setConsoleValue, isGuest, setConsoleIsLoading, viewId,
+}) => {
   const [textValue, setTextValue] = useState('');
   const [language, setLanguage] = useState(Languages[0]);
 
@@ -33,9 +37,9 @@ const CodeEditor = ({ setConsoleValue, isGuest, setConsoleIsLoading, viewId }) =
       .then((response) => {
         console.log(response);
         const compilePoll = setInterval(() => {
-          axios.post(`http://localhost:5000/run_code_result`, {code: textValue, language_id: language.id, token: response.data.token})
-            .then(res => {
-              const status = res.data.status;
+          axios.post('http://localhost:5000/run_code_result', { code: textValue, language_id: language.id, token: response.data.token })
+            .then((res) => {
+              const { status } = res.data;
               const STATUS_ACCEPTED = 'Accepted';
               const STATUS_TLE = 'Time Limit Exceeded';
 
@@ -67,7 +71,7 @@ const CodeEditor = ({ setConsoleValue, isGuest, setConsoleIsLoading, viewId }) =
       }
     }
   };
- 
+
   socket.on('connect', () => {
     // Connected, let's sign-up for to receive messages for this room
     socket.emit('room', viewId);

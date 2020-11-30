@@ -19,7 +19,14 @@ const CodeEditorHeader = (props) => {
           {selectedLanguage.name}
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          { Languages.map((language, index) => <Dropdown.Item key={language.id} eventKey={index}>{language.name}</Dropdown.Item>)}
+          { Languages.map((language, index) => (
+            <Dropdown.Item
+              key={language.id}
+              eventKey={index}
+            >
+              {language.name}
+            </Dropdown.Item>
+          ))}
         </Dropdown.Menu>
       </Dropdown>
     </div>
