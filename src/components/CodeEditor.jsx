@@ -13,6 +13,7 @@ import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/mode-ruby';
 import 'ace-builds/src-noconflict/mode-typescript';
 import 'ace-builds/src-noconflict/mode-csharp';
+import 'ace-builds/src-noconflict/ext-language_tools';
 import useInterval from '../util/setInterval';
 
 /*
@@ -90,7 +91,7 @@ const CodeEditor = ({
   });
 
   socket.on('compile_message', (data) => {
-    console.log(data)
+    console.log(data);
     setConsoleValue(data.message);
     setConsoleIsLoading(false);
   });
