@@ -34,7 +34,7 @@ const Editor = () => {
       <SplitPane split="horizontal" minSize="70%">
         <CodeEditor
           setConsoleValue={setConsoleValue}
-          isGuest
+          isGuest={isGuest}
           setConsoleIsLoading={setConsoleIsLoading}
           viewId={viewId}
         />
