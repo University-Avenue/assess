@@ -28,10 +28,10 @@ const CodeEditor = ({ setConsoleValue, isGuest, setConsoleIsLoading, viewId }) =
   const [language, setLanguage] = useState(Languages[0]);
 
   const handleRun = () => {
+    socket.emit('start_compile', { room: viewId });
     setConsoleIsLoading(true);
     axios.post('http://localhost:5000/run_code', { code: textValue, language_id: language.id })
       .then((response) => {
-        console.log(response);
         const compilePoll = setInterval(() => {
           axios.post(`http://localhost:5000/run_code_result`, {code: textValue, language_id: language.id, token: response.data.token})
             .then(res => {
@@ -46,8 +46,10 @@ const CodeEditor = ({ setConsoleValue, isGuest, setConsoleIsLoading, viewId }) =
               if (shouldExit) {
                 if (res.data.stderr) {
                   setConsoleValue(res.data.stderr);
+                  socket.emit('compile_result', { room: viewId, message: res.data.stderr });
                 } else {
                   setConsoleValue(status.description === STATUS_TLE ? STATUS_TLE : res.data.stdout);
+                  socket.emit('compile_result', { room: viewId, message: status.description === STATUS_TLE ? STATUS_TLE : res.data.stdout });
                 }
                 setConsoleIsLoading(false);
                 clearInterval(compilePoll);
@@ -79,13 +81,23 @@ const CodeEditor = ({ setConsoleValue, isGuest, setConsoleIsLoading, viewId }) =
     }
   });
 
+  socket.on('compile_started', (data) => {
+    setConsoleIsLoading(true);
+  });
+
+  socket.on('compile_message', (data) => {
+    console.log(data)
+    setConsoleValue(data.message);
+    setConsoleIsLoading(false);
+  });
+
   socket.on('reconnect_attempt', () => {
     socket.io.opts.transports = ['polling', 'websocket'];
   });
 
   useInterval(() => {
     updateCodeAsInterviewee(textValue);
-  }, 4000);
+  }, 2000);
 
   return (
     <div className="code-editor-container">
