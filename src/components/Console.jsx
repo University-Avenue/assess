@@ -6,7 +6,7 @@ const Console = ({ consoleValue, consoleIsLoading }) => {
   let displayItem;
   if (consoleIsLoading) {
     displayItem = <ConsoleLoader />;
-  } else if (consoleValue.length > 0) {
+  } else if (consoleValue && consoleValue.length > 0) {
     displayItem = `${consoleValue}`;
   } else {
     displayItem = '';
