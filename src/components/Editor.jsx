@@ -4,7 +4,6 @@ import CodeEditor from './CodeEditor';
 import { ME_QUERY } from './Queries';
 import { useMondaySDK } from './MondaySDKContext';
 import Question from './Question';
-import ConsoleLoader from './ConsoleLoader';
 import Console from './Console';
 
 const Editor = () => {
@@ -22,9 +21,9 @@ const Editor = () => {
   return (
     <SplitPane split="vertical" minSize="30%" allowResize={false}>
       <Question isGuest={isGuest} />
-      <SplitPane split="horizontal" minSize="70%">
+      <SplitPane split="horizontal" minSize="60%">
         <CodeEditor setConsoleValue={setConsoleValue} isGuest={isGuest} setConsoleIsLoading={setConsoleIsLoading} />
-        { consoleIsLoading ? <ConsoleLoader /> : <Console consoleValue={consoleValue} />}
+        <Console isLoading={consoleIsLoading} consoleValue={consoleValue} />
       </SplitPane>
     </SplitPane>
   );
