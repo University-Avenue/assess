@@ -2,16 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ConsoleLoader from './ConsoleLoader';
 
-const Console = (props) => {
-  const { consoleValue, isLoading } = props;
-
+const Console = ({ consoleValue, consoleIsLoading }) => {
   let displayItem;
-  if (isLoading) {
+  if (consoleIsLoading) {
     displayItem = <ConsoleLoader />;
   } else if (consoleValue.length > 0) {
-    displayItem = `Output:\n${consoleValue}`;
+    displayItem = `${consoleValue}`;
   } else {
-    displayItem = 'Result of your program will appear here';
+    displayItem = '';
   }
 
   return (
@@ -20,9 +18,9 @@ const Console = (props) => {
         <div className="console-header">
           <h4>Console</h4>
         </div>
-        <div className="console">
+        <code className="console">
           { displayItem }
-        </div>
+        </code>
       </div>
     </div>
   );
@@ -30,7 +28,7 @@ const Console = (props) => {
 
 Console.propTypes = {
   consoleValue: PropTypes.string.isRequired,
-  isLoading: PropTypes.bool.isRequired,
+  consoleIsLoading: PropTypes.bool.isRequired,
 };
 
 export default Console;

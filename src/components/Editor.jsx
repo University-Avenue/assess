@@ -34,11 +34,11 @@ const Editor = () => {
       <SplitPane split="horizontal" minSize="70%">
         <CodeEditor
           setConsoleValue={setConsoleValue}
-          isGuest={isGuest}
+          isGuest
           setConsoleIsLoading={setConsoleIsLoading}
           viewId={viewId}
         />
-        { consoleIsLoading ? <ConsoleLoader /> : <Console consoleValue={consoleValue} />}
+        <Console consoleValue={consoleValue} consoleIsLoading={consoleIsLoading} />
       </SplitPane>
     </SplitPane>
   );
