@@ -59,7 +59,6 @@ const QuestionSelector = ({ setSelectedQuestion, disabled }) => {
   return (
     <DropdownButton
       onSelect={handleSelect}
-      disabled={disabled}
       title="Questions"
       variant="secondary"
       className="question-dropdown"
