@@ -91,7 +91,6 @@ const CodeEditor = ({
   });
 
   socket.on('compile_message', (data) => {
-    console.log(data);
     setConsoleValue(data.message);
     setConsoleIsLoading(false);
   });
