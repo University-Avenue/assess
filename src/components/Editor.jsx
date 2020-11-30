@@ -16,7 +16,6 @@ const Editor = () => {
 
   useEffect(() => {
     monday.get('sessionToken').then((res) => {
-      console.log(res);
       if (!res.data) return;
 
       const tokens = res.data.split('.');
