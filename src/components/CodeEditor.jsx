@@ -24,7 +24,13 @@ import useInterval from '../util/setInterval';
   3 -> Java
 */
 
-const socket = io.connect('http://localhost:5000', { transports: ['websocket'], forceNew: true });
+const socket = io.connect('http://localhost:5000', {
+  transports: ['websocket'],
+  forceNew: true,
+  reconnection: true,
+  reconnectionDelay: 500,
+  reconnectionAttempts: 10,
+});
 
 const CodeEditor = ({
   setConsoleValue, isGuest, setConsoleIsLoading, viewId,
