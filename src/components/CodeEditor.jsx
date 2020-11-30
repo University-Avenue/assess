@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
 import axios from 'axios';
@@ -11,6 +11,7 @@ import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/mode-c_cpp';
 import 'ace-builds/src-noconflict/mode-javascript';
 import useInterval from '../util/setInterval';
+import { Accordion } from 'react-bootstrap';
 
 /*
   Languages:
@@ -20,48 +21,71 @@ import useInterval from '../util/setInterval';
   3 -> Java
 */
 
-const CodeEditor = ({ setConsoleValue, isGuest, setConsoleIsLoading }) => {
+const socket = io.connect('http://localhost:5000', { transports: ['websocket'], forceNew: true });
+
+const CodeEditor = ({ setConsoleValue, isGuest, setConsoleIsLoading, viewId }) => {
   const [textValue, setTextValue] = useState('');
   const [language, setLanguage] = useState(Languages[0]);
-
-  const socket = io.connect('ws://localhost:5000');
-
-  // let's assume that the client page, once rendered, knows what room it wants to join
-  const room = "test123";
-
-  socket.on('connect', () => {
-    // Connected, let's sign-up for to receive messages for this room
-    socket.emit('room', room);
-  });
-
-  socket.on('message', (data) => {
-    if (!isGuest) {
-      setTextValue(data);
-    }
-  });
 
   const handleRun = () => {
     setConsoleIsLoading(true);
     axios.post('http://localhost:5000/run_code', { code: textValue, language_id: language.id })
       .then((response) => {
-        setConsoleValue(response.data.stdout);
-        setConsoleIsLoading(false);
+        console.log(response);
+        const compilePoll = setInterval(() => {
+          axios.post(`http://localhost:5000/run_code_result`, {code: textValue, language_id: language.id, token: response.data.token})
+            .then(res => {
+              const status = res.data.status;
+              const STATUS_ACCEPTED = 'Accepted';
+              const STATUS_TLE = 'Time Limit Exceeded';
+
+              const shouldExit = status.description === STATUS_ACCEPTED
+                || status.description === STATUS_TLE
+                || !!res.data.stderr;
+
+              if (shouldExit) {
+                if (res.data.stderr) {
+                  setConsoleValue(res.data.stderr);
+                } else {
+                  setConsoleValue(status.description === STATUS_TLE ? STATUS_TLE : res.data.stdout);
+                }
+                setConsoleIsLoading(false);
+                clearInterval(compilePoll);
+              }
+            });
+        }, 3000);
       })
       .catch((error) => { console.log(error); });
   };
 
   const updateCodeAsInterviewee = (userInput) => {
     if (isGuest) {
-      axios
-        .post('http://localhost:5000/message_room/test123', { code: userInput })
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
+      try {
+        socket.emit('user_input', { room: viewId, message: userInput });
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
+ 
+  socket.on('connect', () => {
+    // Connected, let's sign-up for to receive messages for this room
+    socket.emit('room', viewId);
+  });
+
+  socket.on('message', (data) => {
+    if (!isGuest) {
+      setTextValue(data.message);
+    }
+  });
+
+  socket.on('reconnect_attempt', () => {
+    socket.io.opts.transports = ['polling', 'websocket'];
+  });
 
   useInterval(() => {
     updateCodeAsInterviewee(textValue);
-  }, 5000);
+  }, 4000);
 
   return (
     <div className="code-editor-container">
@@ -98,6 +122,7 @@ CodeEditor.propTypes = {
   setConsoleValue: PropTypes.func.isRequired,
   isGuest: PropTypes.bool.isRequired,
   setConsoleIsLoading: PropTypes.func.isRequired,
+  viewId: PropTypes.number.isRequired,
 };
 
 export default CodeEditor;

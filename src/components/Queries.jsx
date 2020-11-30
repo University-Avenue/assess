@@ -3,6 +3,27 @@ export const ME_QUERY = `
     me {
       is_guest
       join_date
+      email
+      id
+      account {
+        name
+        id
+      }
+    }
+  }
+`;
+
+export const USER_QUERY = (id) => `
+  query {
+    users(ids: [${id}]) {
+      created_at
+      email
+      id
+      is_guest
+      account {
+        name
+        id
+      }
     }
   }
 `;
