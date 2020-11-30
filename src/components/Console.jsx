@@ -6,7 +6,7 @@ const Console = (props) => {
   return (
     <div className="console-wrapper">
       <div className="console-container">
-        { consoleValue.length > 0 ? `Output: ${consoleValue}` : ''}
+        { consoleValue && consoleValue.length > 0 ? `Output: ${consoleValue}` : ''}
       </div>
     </div>
   );

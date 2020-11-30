@@ -11,6 +11,7 @@ import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/mode-c_cpp';
 import 'ace-builds/src-noconflict/mode-javascript';
 import useInterval from '../util/setInterval';
+import { Accordion } from 'react-bootstrap';
 
 /*
   Languages:
@@ -30,8 +31,29 @@ const CodeEditor = ({ setConsoleValue, isGuest, setConsoleIsLoading, viewId }) =
     setConsoleIsLoading(true);
     axios.post('http://localhost:5000/run_code', { code: textValue, language_id: language.id })
       .then((response) => {
-        setConsoleValue(response.data.stdout);
-        setConsoleIsLoading(false);
+        console.log(response);
+        const compilePoll = setInterval(() => {
+          axios.post(`http://localhost:5000/run_code_result`, {code: textValue, language_id: language.id, token: response.data.token})
+            .then(res => {
+              const status = res.data.status;
+              const STATUS_ACCEPTED = 'Accepted';
+              const STATUS_TLE = 'Time Limit Exceeded';
+
+              const shouldExit = status.description === STATUS_ACCEPTED
+                || status.description === STATUS_TLE
+                || !!res.data.stderr;
+
+              if (shouldExit) {
+                if (res.data.stderr) {
+                  setConsoleValue(res.data.stderr);
+                } else {
+                  setConsoleValue(status.description === STATUS_TLE ? STATUS_TLE : res.data.stdout);
+                }
+                setConsoleIsLoading(false);
+                clearInterval(compilePoll);
+              }
+            });
+        }, 3000);
       })
       .catch((error) => { console.log(error); });
   };
