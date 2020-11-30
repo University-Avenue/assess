@@ -111,6 +111,18 @@ body {
 }
 
 /* Question Display */
+.question-dropdown {
+  margin-bottom: 1em;
+}
+
+.question-body {
+  text-align: justify;
+}
+
+.question-examples {
+  margin: 3em 0;
+}
+
 .question-info {
   word-break: break-word;
   padding: 16px 20px;
@@ -135,5 +147,4 @@ code {
   white-space: pre-line;
   padding: 1em;
   border-radius: 3px;
-  margin: 3em 0 ;
 }

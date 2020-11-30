@@ -15,14 +15,16 @@ const Question = ({ isGuest }) => {
       <div className="question-info">
         <div className="question-header">
           <QuestionSelector
-            selectedQuestion={selectedQuestion}
             setSelectedQuestion={setSelectedQuestion}
             disabled={isGuest}
           />
-          <h2>{selectedQuestion.name}</h2>
+          <h4>{selectedQuestion.name}</h4>
         </div>
-        <p>{selectedQuestion.body}</p>
-        <code>{selectedQuestion.examples}</code>
+        <p className="question-body">{selectedQuestion.body}</p>
+        <div className="question-examples">
+          <h5>Examples</h5>
+          <code>{selectedQuestion.examples}</code>
+        </div>
       </div>
 
     </div>

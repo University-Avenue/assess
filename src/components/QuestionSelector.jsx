@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import { useMondaySDK } from './MondaySDKContext';
 import { GET_ITEMS } from './Queries';
-import { questionShape } from './PropTypeShapes';
 
-const QuestionSelector = ({ selectedQuestion, setSelectedQuestion, disabled }) => {
+const QuestionSelector = ({ setSelectedQuestion, disabled }) => {
   const [questions, setQuestions] = useState([]);
   const monday = useMondaySDK();
 
@@ -63,6 +62,7 @@ const QuestionSelector = ({ selectedQuestion, setSelectedQuestion, disabled }) =
       disabled={disabled}
       title="Questions"
       variant="secondary"
+      className="question-dropdown"
     >
       {questions.map((question, index) => (
         <Dropdown.Item
@@ -77,7 +77,6 @@ const QuestionSelector = ({ selectedQuestion, setSelectedQuestion, disabled }) =
 };
 
 QuestionSelector.propTypes = {
-  selectedQuestion: questionShape.isRequired,
   setSelectedQuestion: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
 };
