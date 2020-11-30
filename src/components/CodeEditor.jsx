@@ -40,7 +40,6 @@ const CodeEditor = ({
 
   const handleRun = () => {
     socket.emit('start_compile', { room: viewId });
-    setConsoleIsLoading(true);
     axios.post('http://localhost:5000/run_code', { code: textValue, language_id: language.id })
       .then((response) => {
         const compilePoll = setInterval(() => {
@@ -56,10 +55,8 @@ const CodeEditor = ({
 
               if (shouldExit) {
                 if (res.data.stderr) {
-                  setConsoleValue(res.data.stderr);
                   socket.emit('compile_result', { room: viewId, message: res.data.stderr });
                 } else {
-                  setConsoleValue(status.description === STATUS_TLE ? STATUS_TLE : res.data.stdout);
                   socket.emit('compile_result', { room: viewId, message: status.description === STATUS_TLE ? STATUS_TLE : res.data.stdout });
                 }
                 setConsoleIsLoading(false);
