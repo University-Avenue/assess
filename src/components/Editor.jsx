@@ -4,7 +4,6 @@ import CodeEditor from './CodeEditor';
 import { USER_QUERY } from './Queries';
 import { useMondaySDK } from './MondaySDKContext';
 import Question from './Question';
-import ConsoleLoader from './ConsoleLoader';
 import Console from './Console';
 
 const Editor = () => {
