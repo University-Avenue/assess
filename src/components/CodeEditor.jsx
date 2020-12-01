@@ -24,7 +24,7 @@ import useInterval from '../util/setInterval';
   3 -> Java
 */
 
-const socket = io.connect('http://localhost:5000', {
+const socket = io.connect(process.env.REACT_APP_ASSESS_API_BASE_URL, {
   transports: ['websocket'],
   forceNew: true,
   reconnection: true,
@@ -40,10 +40,10 @@ const CodeEditor = ({
 
   const handleRun = () => {
     socket.emit('start_compile', { room: viewId });
-    axios.post('http://localhost:5000/run_code', { code: textValue, language_id: language.id })
+    axios.post(`${process.env.REACT_APP_ASSESS_API_BASE_URL}run_code`, { code: textValue, language_id: language.id })
       .then((response) => {
         const compilePoll = setInterval(() => {
-          axios.post('http://localhost:5000/run_code_result', { code: textValue, language_id: language.id, token: response.data.token })
+          axios.post(`${process.env.REACT_APP_ASSESS_API_BASE_URL}run_code_result`, { code: textValue, language_id: language.id, token: response.data.token })
             .then((res) => {
               const { status } = res.data;
               const STATUS_ACCEPTED = 'Accepted';
